@@ -32,13 +32,13 @@ sudo apt install build-essential
 ### Clone the Repository
 
 ```bash
-git clone --recurse-submodules https://github.com/jxxyh/Mosformer.git
+git clone --recurse-submodules https://github.com/XidianNSS/Mosformer.git
 ```
 
 OR
 
 ```bash
-git clone https://github.com/jxxyh/Mosformer.git
+git clone https://github.com/XidianNSS/Mosformer.git
 git submodule update --init --recursive
 ```
 
@@ -126,3 +126,16 @@ python pt2npz.py -h
 
 ## Contact us
 Email: yuhengxia@stu.xidian.edu.cn
+
+
+## Citation
+```
+@inproceedings{cheng2025mosformer,
+  title     = {Mosformer: Maliciously Secure Three-Party Inference Framework for Large Transformers},
+  author    = {Ke Cheng and Yuheng Xia and Anxiao Song and Jiaxuan Fu and Wenjie Qu and Yulong Shen and Jiaheng Zhang},
+  booktitle = {32nd ACM Conference on Computer and Communications Security, CCS 2025},
+  year      = {2025},
+  month     = {October},
+  address   = {Taipei, Taiwan, China}
+}
+```
