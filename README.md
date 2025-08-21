@@ -1,6 +1,13 @@
 # Mosformer: Maliciously Secure Three-Party Inference Framework for Large Transformers
 
-A maliciously secure framework for efficient 3-party protocols tailored for  Transformer model inference.
+A maliciously secure framework for efficient 3-party protocols tailored for  Transformer model inference. This work have been accepted by ACM CCS 2025.
+
+## Note
+This is an academic proof-of-concept prototype and is still under development.
+It **should not** be used in any security sensitive product.
+
+This repository currently provides the online phase implementation for privacy-preserving inference of large language models.
+The offline phase was implemented with [NssMPClib](https://github.com/XidianNSS/NssMPClib), and the performance results in our paper are based on that implementation and derived computations rather than being fully implemented here.
 
 ## Requirements
 
@@ -26,6 +33,13 @@ sudo apt install build-essential
 
 ```bash
 git clone --recurse-submodules https://github.com/jxxyh/Mosformer.git
+```
+
+OR
+
+```bash
+git clone https://github.com/jxxyh/Mosformer.git
+git submodule update --init --recursive
 ```
 
 ### Build and Run
@@ -68,6 +82,7 @@ sh eval_bash.sh
 
 | `test_name` | Description                                                                 |
 |-------------|-----------------------------------------------------------------------------|
+| `-h, --help`| Show this help message and exit                                            |
 | `rss`       | Evaluation of replicated secret sharing (RSS)-based secure computation     |
 | `bench`     | Microbenchmarking of core secure operations (e.g., ReLU, MatMul, Softmax)  |
 | `cnn3pc`    | Secure inference for CNN models, including AlexNet and ResNet50            |
@@ -76,4 +91,38 @@ sh eval_bash.sh
 
 > **Note:** For `llmacc`, make sure to place the model and dataset shares in the following directories:
 > - `./log/model_shares/`
-> - `./log/data_shares/`
+> - `./log/data_shares/`  
+
+#### How to get shares
+
+We provide a Python script `./tests/pt2npz.py` to help convert and share plaintext model parameters and input data. This script relies on [NssMPClib](https://github.com/XidianNSS/NssMPClib) — please follow its documentation to configure the required environment.  
+
+Before running the script, please prepare the plaintext model parameter files and input data files:  
+
+- **Model parameters** should be named as `[model_name]_[dataset_name].pt` and stored in `./log/model_save/`.  
+- **Input data** should be named as `[dataset_name].pt` and stored in `./log/data_save/`. The input data should be the **embedding hidden states**.  
+
+Currently, the following model–dataset pairs are supported by default:  
+
+- `Bert_base` → `RTE`, `QNLI`, `STS-B`  
+- `GPT2` → `WikiText103`  
+
+You may add new models and datasets as needed, but make sure to also update the corresponding files, such as `./tests/pt2npz.py` and `./tests/llm_acc.cpp`.  
+
+Once preparation is complete, you can share the model and data with:  
+
+```bash
+cd ./tests
+python pt2npz.py [model_name] [dataset]
+```
+The shared model and data will be stored in `./log/model_shares/` and `./log/data_shares/`.
+
+For help information, run:
+
+```bash
+python pt2npz.py -h
+```
+
+
+## Contact us
+Email: yuhengxia@stu.xidian.edu.cn
