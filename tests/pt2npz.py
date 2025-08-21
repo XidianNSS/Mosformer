@@ -1,3 +1,4 @@
+import sys
 import heapq
 from collections import OrderedDict
 
@@ -65,15 +66,45 @@ def share_data(dataset):
     print("finish sharing data")
 
 
+def main():
+    tasks = [
+        ("Bert_base", "RTE"),
+        ("Bert_base", "QNLI"),
+        ("Bert_base", "STS-B"),
+        ("GPT2", "Wiki")
+    ]
+
+    def show_help():
+        print("\nUsage:")
+        print("  python script.py [model] [dataset]")
+        print("\nDescription:")
+        print("  Run share_model and share_data for either all tasks (default)")
+        print("  or for a specific <model, dataset> pair.")
+        print("\nAvailable tasks:")
+        for model, dataset in tasks:
+            print(f"  {model:10s} {dataset}")
+        print("\nOptions:")
+        print("  -h, --help    Show this help message and exit\n")
+
+    if len(sys.argv) == 2 and sys.argv[1] in ("-h", "--help"):
+        show_help()
+        sys.exit(0)
+
+    if len(sys.argv) == 3:
+        # 用户指定模型和数据集
+        model, dataset = sys.argv[1], sys.argv[2]
+        share_model(model, dataset)
+        share_data(dataset)
+    elif len(sys.argv) == 1:
+        # 默认运行所有任务
+        for model, dataset in tasks:
+            share_model(model, dataset)
+            share_data(dataset)
+    else:
+        print("Invalid arguments. Use -h or --help for usage information.")
+        sys.exit(1)
+
 if __name__ == "__main__":
-    share_model("Bert_base", "RTE")
-    share_data("RTE")
+    main()
 
-    share_model("Bert_base", "QNLI")
-    share_data("QNLI")
 
-    share_model("Bert_base", "STS-B")
-    share_data("STS-B")
-
-    share_model("GPT2", "Wiki")
-    share_data("Wiki")
